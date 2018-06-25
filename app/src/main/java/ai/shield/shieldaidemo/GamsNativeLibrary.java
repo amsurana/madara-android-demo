@@ -1,6 +1,7 @@
 package ai.shield.shieldaidemo;
 
-import com.madara.KnowledgeBase;
+
+import ai.madara.knowledge.KnowledgeBase;
 
 /**
  * Created by Amit S on 21/05/18.
