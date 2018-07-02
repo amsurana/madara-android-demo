@@ -3,33 +3,74 @@ package ai.shield.shieldaidemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String[] tests = new String[0];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tests = getResources().getStringArray(R.array.test_entries);
+
+        ((Spinner) findViewById(R.id.tests)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String testName = tests[i];
+                performTest(testName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 
-    public void listenForAgents(View view) {
-        boolean isSet = GamsNativeLibrary.getInstance().getStatus();
-        TextView sampleText = ((TextView) findViewById(R.id.sample_text));
-        if (isSet) {
-            sampleText.setText(sampleText.getText() + "\nAll Agents ready...");
-        } else {
-            sampleText.setText(sampleText.getText() + "\nAgents not ready yet.");
+    private void performTest(String testName) {
+        try {
+            String findClass = "ai.madara.tests." + testName;
+            Class clz = Class.forName(findClass);
+            Object o = clz.newInstance();
+            Method mainMethod = clz.getDeclaredMethod("main", String[].class);
+            String[] params = null; // init params accordingly
+            mainMethod.invoke(o, (Object) params);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void markAgentsReady(View view) {
-        GamsNativeLibrary.getInstance().setReady();
 
+    private StringBuilder readLogs() {
+        StringBuilder logBuilder = new StringBuilder();
+        try {
+            Process process = Runtime.getRuntime().exec("logcat -d");
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                logBuilder.append(line + "\n");
+            }
+        } catch (IOException e) {
+        }
+        return logBuilder;
     }
 
 
+    public void showLogs(View view) {
+        StringBuilder builder = readLogs();
+        ((TextView) findViewById(R.id.logcat)).setText(builder.toString());
+    }
 }

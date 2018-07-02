@@ -10,12 +10,8 @@ public class GamsNativeLibrary {
     private KnowledgeBase knowledge = new KnowledgeBase();
 
     static {
-       
-        System.loadLibrary("MADARA_JNI");
-        //System.loadLibrary("MADARA");
-        System.loadLibrary("GAMS_JNI");
-        //System.loadLibrary("GAMS");
-
+        System.loadLibrary("c++_shared");
+        System.loadLibrary("MADARA");
     }
 
     private static GamsNativeLibrary instance;
@@ -24,11 +20,13 @@ public class GamsNativeLibrary {
         if (instance == null) {
             instance = new GamsNativeLibrary();
         }
+
         return instance;
     }
 
     public void setReady() {
         knowledge.set("all_agents_ready", 1.0);
+
     }
 
     public boolean getStatus() {
