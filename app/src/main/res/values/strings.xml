@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">ShieldAI Demo</string>
+    <string name="app_name">GAMS/MADARA Demo</string>
 
-    <string-array name="test_entries">
+    <string-array name="madara_test_classes">
 
         <item>AesBufferFilterTest</item>
         <item>ContainerTest</item>
@@ -15,7 +15,19 @@
         <item>TestReasoningThroughput</item>
         <!--<item>TestRegistry</item>-->
         <item>TestUtility</item>
+        <item>NetworkTest</item>
         <!--<item>ThreadedCounter</item>-->
         <!--<item>ThreadedCounterBlaster</item>-->
+    </string-array>
+
+
+    <string-array name="gams_test_classes">
+
+        <item>TestDebuggerLoop</item>
+        <item>TestDebuggerLoopFilters</item>
+        <item>TestMessageProfilingAlgorithm</item>
+        <item>TestMessagingThroughput</item>
+        <item>TestMultiController</item>
+        <item>TestUtility</item>
     </string-array>
 </resources>

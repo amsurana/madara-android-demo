@@ -30,7 +30,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //from mavenCentral()
-    implementation 'ai.madara:madara:3.2.1'
-    implementation 'ai.gams:gams:1.2.1'
-
+    implementation 'ai.madara:madara:3.2.3'
+    implementation 'ai.gams:gams:1.2.2'
 }

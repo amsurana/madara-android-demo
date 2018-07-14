@@ -1,76 +1,28 @@
 package ai.shield.shieldaidemo;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-
+/**
+ * Created by Amit S on 11/07/18.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private String[] tests = new String[0];
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tests = getResources().getStringArray(R.array.test_entries);
-
-        ((Spinner) findViewById(R.id.tests)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String testName = tests[i];
-                performTest(testName);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
     }
 
-    private void performTest(String testName) {
-        try {
-            String findClass = "ai.madara.tests." + testName;
-            Class clz = Class.forName(findClass);
-            Object o = clz.newInstance();
-            Method mainMethod = clz.getDeclaredMethod("main", String[].class);
-            String[] params = null; // init params accordingly
-            mainMethod.invoke(o, (Object) params);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void runMadara(View view) {
+        startActivity(new Intent(this, MadaraTestsRunner.class));
     }
 
-
-    private StringBuilder readLogs() {
-        StringBuilder logBuilder = new StringBuilder();
-        try {
-            Process process = Runtime.getRuntime().exec("logcat -d");
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                logBuilder.append(line + "\n");
-            }
-        } catch (IOException e) {
-        }
-        return logBuilder;
-    }
-
-
-    public void showLogs(View view) {
-        StringBuilder builder = readLogs();
-        ((TextView) findViewById(R.id.logcat)).setText(builder.toString());
+    public void runGams(View view) {
+        startActivity(new Intent(this, GamsTestsRunner.class));
     }
 }
