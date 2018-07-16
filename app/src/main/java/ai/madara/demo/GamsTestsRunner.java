@@ -1,4 +1,4 @@
-package ai.shield.shieldaidemo;
+package ai.madara.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

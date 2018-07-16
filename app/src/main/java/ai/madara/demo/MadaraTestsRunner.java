@@ -1,4 +1,4 @@
-package ai.shield.shieldaidemo;
+package ai.madara.demo;
 
 import android.content.Intent;
 import android.os.Bundle;

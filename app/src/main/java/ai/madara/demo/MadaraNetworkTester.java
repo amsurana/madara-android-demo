@@ -1,4 +1,4 @@
-package ai.shield.shieldaidemo;
+package ai.madara.demo;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +21,10 @@ import ai.madara.transport.filters.Packet;
  */
 public class MadaraNetworkTester extends AppCompatActivity {
 
+    static{
+        System.loadLibrary("zmq");
+        System.loadLibrary("MADARA");
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +48,7 @@ public class MadaraNetworkTester extends AppCompatActivity {
             try {
                 QoSTransportSettings settings = new QoSTransportSettings();
                 settings.setHosts(new String[]{"239.255.0.1:4150"});
-                settings.setType(TransportType.MULTICAST_TRANSPORT);
+                settings.setType(TransportType.ZMQ_TRANSPORT);
 
                 // add the above filter for all file types, applied before sending
                 // settings.addSendFilter (new AddOrEraseId());
