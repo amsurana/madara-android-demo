@@ -31,69 +31,64 @@ public class MadaraNetworkTester extends AppCompatActivity {
         setContentView(R.layout.activity_network);
         getSupportActionBar().setTitle("Networking Test");
 
-        sendMessage(null);
-
-
     }
 
-    public void sendMessage(View view) {
-        new NetworkThread().start();
+    public void runTest(View view) {
+        initKb();
     }
 
 
-    private class NetworkThread extends Thread {
-        @Override
-        public void run() {
-            try {
-                QoSTransportSettings settings = new QoSTransportSettings();
-                settings.setHosts(new String[]{"239.255.0.1:4150"});
-                settings.setType(TransportType.MULTICAST_TRANSPORT);
+    public void initKb() {
+        try {
+            QoSTransportSettings settings = new QoSTransportSettings();
+            settings.setHosts(new String[]{"239.255.0.1:4150"});
+            settings.setType(TransportType.MULTICAST_TRANSPORT);
 
-                settings.addReceiveFilter(new AggregateFilter() {
-                    @Override
-                    public void filter(Packet packet, TransportContext context, Variables variables) {
-                        Log.i("MadaraNetworkTester", "Received Message: ");
-                        String[] keys = new String[0];
+            settings.addReceiveFilter(new AggregateFilter() {
+                @Override
+                public void filter(Packet packet, TransportContext context, Variables variables) {
+                    Log.i("MadaraNetworkTester", "Received Message: ");
+                    String[] keys = new String[0];
+                    try {
+                        keys = packet.getKeys();
+                    } catch (MadaraDeadObjectException e) {
+                        e.printStackTrace();
+                    }
+                    int i = 0;
+                    for (String key : keys) {
                         try {
-                            keys = packet.getKeys();
+                            Log.i("MadaraNetworkTester", "Received: " + key + " == " + packet.get(key).toString());
                         } catch (MadaraDeadObjectException e) {
                             e.printStackTrace();
                         }
-                        int i = 0;
-                        for (String key : keys) {
-                            try {
-                                Log.i("MadaraNetworkTester", "Received: " + key + " == " + packet.get(key).toString());
-                            } catch (MadaraDeadObjectException e) {
-                                e.printStackTrace();
-                            }
-                            i++;
-                        }
+                        i++;
                     }
-                });
+                }
+            });
 
-                // create a knowledge base with the multicast transport settings
-                KnowledgeBase knowledge = new KnowledgeBase("", settings);
-                EvalSettings queueUntilLater = new EvalSettings();
-                queueUntilLater.setDelaySendingModifieds(true);
+            // create a knowledge base with the multicast transport settings
+            KnowledgeBase knowledge = new KnowledgeBase("", settings);
+            EvalSettings queueUntilLater = new EvalSettings();
+            queueUntilLater.setDelaySendingModifieds(true);
 
-                // set id so we have access to it in the aggregate outgoing filter
-                knowledge.set(".id", 1);
+            // set id so we have access to it in the aggregate outgoing filter
+            knowledge.set(".id", 1);
 
-                // build a packet from this id with some information
-                knowledge.set("occupation", "Banker", queueUntilLater);
-                knowledge.set("age", 43, queueUntilLater);
+            // build a packet from this id with some information
+            knowledge.set("occupation", "Banker", queueUntilLater);
+            knowledge.set("age", 43, queueUntilLater);
 
-                // a final piece of data with default settings will activate the
-                // aggregate filter
-                knowledge.set("money", 553200.50);
+            // a final piece of data with default settings will activate the
+            // aggregate filter
+            knowledge.set("money", 553200.50);
 
 
-                knowledge.evaluate("amit_ready = 1");
+            knowledge.evaluate("amit_ready = 1");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
 }

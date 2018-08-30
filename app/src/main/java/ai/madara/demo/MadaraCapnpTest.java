@@ -22,7 +22,7 @@ import ai.madara.transport.filters.Packet;
 /**
  * Created by Amit S on 08/07/18.
  *
- * In order to send multicast data from C++ program check out $MADARA_ROOT/tests/transport/test_multicast_any.cpp
+ * In order to send multicast data from C++ program check out $MADARA_ROOT/tests/test_any_transport_multicast.cpp
  */
 public class MadaraCapnpTest extends BaseActivity {
 
@@ -41,11 +41,11 @@ public class MadaraCapnpTest extends BaseActivity {
         setContentView(R.layout.activity_network);
         getSupportActionBar().setTitle("Capnp Test");
 
-        initKb(null);
+        runTest(null);
     }
 
-    public void initKb(View view) {
-        initKb();
+    public void runTest(View view) {
+        runTest();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MadaraCapnpTest extends BaseActivity {
         myKnowledgeBase.free();
     }
 
-    public void initKb() {
+    public void runTest() {
         try {
 
             registerAny();
@@ -95,9 +95,6 @@ public class MadaraCapnpTest extends BaseActivity {
 
     private void registerAny() {
         Any.registerClass("Point", Geo.Point.factory);
-        Any.registerClass("Post", Geo.Pose.factory);
-        Any.registerClass("Quaternion", Geo.Quaternion.factory);
-        Any.registerClass("Stamp", Geo.Stamp.factory);
     }
 
 
@@ -116,6 +113,14 @@ public class MadaraCapnpTest extends BaseActivity {
                     Geo.Point.Reader point = anyPoint.reader(Geo.Point.factory);
                     Log.i(TAG, String.format("Any type Point: (x,y,z) (%f,%f,%f)", point.getX(), point.getY(), point.getZ()));
                 }
+
+                KnowledgeRecord network_point = myKnowledgeBase.get("pointOverNetwork");
+                if (network_point.isValid()) {
+                    Any anyPoint = network_point.toAny();
+                    Geo.Point.Reader point = anyPoint.reader(Geo.Point.factory);
+                    Log.i(TAG, String.format("Any type Point: (x,y,z) (%f,%f,%f)", point.getX(), point.getY(), point.getZ()));
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
