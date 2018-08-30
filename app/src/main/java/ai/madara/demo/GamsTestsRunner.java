@@ -1,18 +1,13 @@
 package ai.madara.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
-public class GamsTestsRunner extends AppCompatActivity {
+public class GamsTestsRunner extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +28,6 @@ public class GamsTestsRunner extends AppCompatActivity {
         });
 
 
-
     }
 
     private void performTest(String testName) {
@@ -50,30 +44,6 @@ public class GamsTestsRunner extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    private StringBuilder readLogs() {
-        StringBuilder logBuilder = new StringBuilder();
-        try {
-            Process process = Runtime.getRuntime().exec("logcat -d");
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                logBuilder.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return logBuilder;
-    }
-
-
-    public void showLogs(View view) {
-        StringBuilder builder = readLogs();
-        ((TextView) findViewById(R.id.logcat)).setText(builder.toString());
     }
 
 

@@ -3,8 +3,9 @@
 
     <string-array name="madara_test_classes">
 
-        <item>AesBufferFilterTest</item>
+
         <item>ContainerTest</item>
+        <item>AesBufferFilterTest</item>
         <!--<item>CounterFilterTest</item>-->
         <!--<item>JavaLockPerformance</item>-->
         <!--<item>LogFilterTest</item>-->
@@ -16,6 +17,7 @@
         <!--<item>TestRegistry</item>-->
         <item>TestUtility</item>
         <item>NetworkTest</item>
+        <item>CapnpTest</item>
         <!--<item>ThreadedCounter</item>-->
         <!--<item>ThreadedCounterBlaster</item>-->
     </string-array>

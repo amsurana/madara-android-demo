@@ -21,10 +21,10 @@ import ai.madara.transport.filters.Packet;
  */
 public class MadaraNetworkTester extends AppCompatActivity {
 
-    static{
-        System.loadLibrary("zmq");
+    static {
         System.loadLibrary("MADARA");
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,6 @@ public class MadaraNetworkTester extends AppCompatActivity {
         sendMessage(null);
 
 
-
     }
 
     public void sendMessage(View view) {
@@ -42,16 +41,14 @@ public class MadaraNetworkTester extends AppCompatActivity {
     }
 
 
-    private class NetworkThread extends Thread{
+    private class NetworkThread extends Thread {
         @Override
         public void run() {
             try {
                 QoSTransportSettings settings = new QoSTransportSettings();
                 settings.setHosts(new String[]{"239.255.0.1:4150"});
-                settings.setType(TransportType.ZMQ_TRANSPORT);
+                settings.setType(TransportType.MULTICAST_TRANSPORT);
 
-                // add the above filter for all file types, applied before sending
-                // settings.addSendFilter (new AddOrEraseId());
                 settings.addReceiveFilter(new AggregateFilter() {
                     @Override
                     public void filter(Packet packet, TransportContext context, Variables variables) {

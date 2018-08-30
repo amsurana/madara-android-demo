@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name="ai.madara.demo.MadaraTestsRunner" />
+        <activity android:name="ai.madara.demo.MadaraCapnpTest" />
         <activity android:name="ai.madara.demo.GamsTestsRunner" />
         <activity android:name="ai.madara.demo.MadaraNetworkTester" />
     </application>
