@@ -105,16 +105,15 @@ public class MadaraCapnpTest extends BaseActivity {
             try {
 
                 myKnowledgeBase.print();
-                //do not use *packet* to read Any type.
-                //Local point
-                KnowledgeRecord pointKr = myKnowledgeBase.get("point");
+
+                KnowledgeRecord pointKr = variables.get("point");
                 if (pointKr.isValid()) {
                     Any anyPoint = pointKr.toAny();
                     Geo.Point.Reader point = anyPoint.reader(Geo.Point.factory);
                     Log.i(TAG, String.format("Any type Point: (x,y,z) (%f,%f,%f)", point.getX(), point.getY(), point.getZ()));
                 }
 
-                KnowledgeRecord network_point = myKnowledgeBase.get("pointOverNetwork");
+                KnowledgeRecord network_point = variables.get("pointOverNetwork");
                 if (network_point.isValid()) {
                     Any anyPoint = network_point.toAny();
                     Geo.Point.Reader point = anyPoint.reader(Geo.Point.factory);
